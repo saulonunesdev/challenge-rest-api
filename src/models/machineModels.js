@@ -1,16 +1,16 @@
 const machines = require('../../machines.json');
+const pricing = require('../../prices.json');
 
 let data = { ...machines };
 
-function findAllMachines () {
-	return data;
-}
-
 function findMachineById (id) {
-	return data[id];
+	const obj = {
+		...data[id],
+		pricing: pricing[id] ? pricing[id] : pricing.default_pricing
+	};
+	return data[id] ? obj : 'not found';
 }
 
 module.exports = {
-	findAllMachines,
 	findMachineById
 };

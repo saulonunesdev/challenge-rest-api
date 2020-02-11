@@ -3,7 +3,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
-import { getAllMachines, getAllPricing } from './api';
+import { machine, prices } from './api';
 
 dotenv.config();
 
@@ -15,8 +15,10 @@ const PORT = process.env.PORT || 1337;
 const router = new Router();
 
 router
-	.get('/machines', getAllMachines)
-	.get('/pricing-models', getAllPricing);
+	.get('/machines/:id/prices', machine.getMachinebyId)
+	.get('/pricing-models', prices.getAllPricing)
+	.get('/pricing-models/:id', prices.getPricebyId)
+	.get('/pricing-models/:id/prices', prices.getPricingbyId);
 
 app
 	.use(router.routes())

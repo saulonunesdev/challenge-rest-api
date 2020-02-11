@@ -1,15 +1,28 @@
 const machineModels = require('./models/machineModels');
 const pricingModels = require('./models/pricingModels');
 
-function getAllMachines (ctx, next) {
-	ctx.body = machineModels.findAllMachines();
-}
+const machine = {
+	getMachinebyId (ctx, netx) {
+		const { id } = ctx.params;
+		ctx.body = machineModels.findMachineById(id);
+	}
+};
 
-function getAllPricing (ctx, next) {
-	ctx.body = pricingModels.findAllPricing();
-}
+const prices = {
+	getAllPricing (ctx, next) {
+		ctx.body = pricingModels.findAllPricing();
+	},
+	getPricebyId (ctx, netx) {
+		const { id } = ctx.params;
+		ctx.body = pricingModels.findPricebyId(id);
+	},
+	getPricingbyId (ctx, netx) {
+		const { id } = ctx.params;
+		ctx.body = pricingModels.findPricingbyId(id);
+	}
+};
 
 module.exports = {
-	getAllMachines,
-	getAllPricing
+	machine,
+	prices
 };

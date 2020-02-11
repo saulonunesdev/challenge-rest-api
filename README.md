@@ -26,23 +26,26 @@ Build a REST API that will allow Polycade to manage pricing individually on mach
     - does not affect the pricing configurations for the pricing model
   - GET `/pricing-models/:pm-id/prices`
     - returns the prices configured for a specific pricing model
-  - POST `/pricing-models/:pm-id/prices`
-    - adds a new price configuration for a pricing model
-  - DELETE `/pricing-models/:pm-id/prices/:price-id`
-    - removes a price configuration from a pricing model
-    - if the pricing model isn't found by `pm-id` it responds with not found
-    - if the price configuration isn't found by `price-id` it responds with not found
-  - PUT `/machines/:machine-id/prices/:pm-id`
-    - sets the pricing model for an individual machine to the one from `pm-id`
-    - if the machine already has a pricing model, it is replaced by this one
-    - if the machine isn't found by `machine-id` it responds with not found
-    - if the pricing model isn't found by `pm-id` it responds with not found
-  - DELETE `/machines/:machine-id/prices/:pm-id`
-    - removes the pricing model from the machine (unsets it)
-  - GET `/machines/:machine-id/prices`
-    - return the pricing model and price configurations set for a given machine
-    - if the machine does not have a pricing model configured then the default model from `prices.json` is returned
-    - if the machine isn't found by `machine-id` it responds with not found
+
+ > Note: Assumed 'not found' when the pricing model isn't found by `pm-id`
+
+- POST `/pricing-models/:pm-id/prices`
+  - adds a new price configuration for a pricing model
+- DELETE `/pricing-models/:pm-id/prices/:price-id`
+  - removes a price configuration from a pricing model
+  - if the pricing model isn't found by `pm-id` it responds with not found
+  - if the price configuration isn't found by `price-id` it responds with not found
+- PUT `/machines/:machine-id/prices/:pm-id`
+  - sets the pricing model for an individual machine to the one from `pm-id`
+  - if the machine already has a pricing model, it is replaced by this one
+  - if the machine isn't found by `machine-id` it responds with not found
+  - if the pricing model isn't found by `pm-id` it responds with not found
+- DELETE `/machines/:machine-id/prices/:pm-id`
+  - removes the pricing model from the machine (unsets it)
+- GET `/machines/:machine-id/prices`
+  - return the pricing model and price configurations set for a given machine
+  - if the machine does not have a pricing model configured then the default model from `prices.json` is returned
+  - if the machine isn't found by `machine-id` it responds with not found
 - Tests
   - Each endpoint should have its own test
 
