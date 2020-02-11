@@ -5,12 +5,14 @@
 	"scripts": {
 		"lint": "eslint src/index.js",
 		"start": "babel-node src/index.js",
-		"test": "jest",
-		"watch": "nodemon --exec babel-node --watch src/index.js",
+		"test": "npm run lint && jest",
+		"watch": "nodemon --exec babel-node src/index.js",
 		"watch-test": "jest --watch"
 	},
 	"license": "MIT",
 	"dependencies": {
+		"@koa/cors": "^2.2.3",
+		"dotenv": "^8.2.0",
 		"koa": "^2.11.0",
 		"koa-bodyparser": "^4.2.1",
 		"koa-router": "^8.0.6",
@@ -29,6 +31,6 @@
 		"testEnvironment": "node",
 		"testPathIgnorePatterns": [
 			"<rootDir>/node_modules"
-	]
+		]
 	}
 }
