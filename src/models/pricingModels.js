@@ -8,7 +8,8 @@ const pricingModels = {
 	findAllPricing () {
 		const _data = { ...pricing };
 		const resp = {
-			defaultPricing: _data.default_pricing,
+			// eslint-disable-next-line camelcase
+			default_pricing: _data.default_pricing,
 			prices: delete _data.default_pricing ? Object.keys(_data).map(key => _data[key]) : {}
 		};
 		return resp;

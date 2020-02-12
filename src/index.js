@@ -16,6 +16,8 @@ const router = new Router();
 
 router
 	.get('/machines/:id/prices', machine.getMachinebyId)
+	.put('/machines/:machineId/prices/:pricingId', machine.updateMachinePricing)
+	.delete('/machines/:machineId/prices/:pricingId', machine.deleteMachinePricing)
 	.get('/pricing-models', prices.getAllPricing)
 	.get('/pricing-models/:id', prices.getPricebyId)
 	.get('/pricing-models/:id/prices', prices.getPricingbyId)

@@ -2,8 +2,14 @@ import machineModels from './models/machineModels';
 import pricingModels from './models/pricingModels';
 
 const machine = {
-	getMachinebyId (ctx, netx) {
+	getMachinebyId (ctx, next) {
 		ctx.body = machineModels.findMachineById(ctx.params.id);
+	},
+	updateMachinePricing (ctx, next) {
+		ctx.body = machineModels.updateMachinePricing(ctx.params.machineId, ctx.params.pricingId);
+	},
+	deleteMachinePricing (ctx, next) {
+		ctx.body = machineModels.deleteMachinePricing(ctx.params.machineId, ctx.params.pricingId);
 	}
 };
 
