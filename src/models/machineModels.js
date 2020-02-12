@@ -7,7 +7,7 @@ var machines = { ...data };
 const machineModels = {
 	findMachineById (id) {
 		if (!machines[id]) {
-			return 'not found';
+			return 'Not Found';
 		}
 
 		const obj = {
@@ -24,7 +24,7 @@ const machineModels = {
 	},
 	updateMachinePricing (machineId, pricingId) {
 		if (!machines[machineId] || !pricingData[pricingId]) {
-			return 'not found';
+			return 'Not Found';
 		}
 
 		machines = {
@@ -43,8 +43,8 @@ const machineModels = {
 		return this.findMachineById(machineId);
 	},
 	deleteMachinePricing (machineId, pricingId) {
-		if (!machines[machineId] || !machines[machineId].pricing_id) {
-			return 'not found';
+		if (!machines[machineId] || machines[machineId].pricing_id !== pricingId) {
+			return 'Not Found';
 		}
 
 		machines = {
@@ -59,8 +59,6 @@ const machineModels = {
 		fs.writeFile('machines.json', JSON.stringify(machines), 'utf8', () => {
 			console.log('Machine.' + machineId + '.pricing_id removed: ' + pricingId);
 		});
-
-		return this.findMachineById(machineId);
 	}
 };
 

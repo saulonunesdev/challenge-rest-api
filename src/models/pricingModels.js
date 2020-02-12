@@ -15,10 +15,10 @@ const pricingModels = {
 		return resp;
 	},
 	findPricebyId (id) {
-		return pricing[id] ? pricing[id] : 'not found';
+		return pricing[id] ? pricing[id] : 'Not Found';
 	},
 	findPricingbyId (id) {
-		return pricing[id] ? pricing[id].pricing : 'not found';
+		return pricing[id] ? pricing[id].pricing : 'Not Found';
 	},
 	setPricingMetaData (pricingId, key, value) {
 		if (key === 'id' || key === 'pricing') {
@@ -44,15 +44,11 @@ const pricingModels = {
 		});
 	},
 	savePricingPrices (pricingId, prices) {
-		if (prices.length === 0) {
+		if (!pricing[pricingId] || prices.length === 0) {
 			return;
 		}
 
 		const price = pricing[pricingId];
-
-		if (!price) {
-			return 'not found';
-		}
 
 		pricing = {
 			...pricing,
@@ -84,15 +80,15 @@ const pricingModels = {
 	deletePricingPrice (pricingId, priceId) {
 		let price = pricing[pricingId];
 
-		if (!price || price.pricing.length === 0 || price.pricing.findIndex(element => element.id === Number(priceId)) === -1) {
-			return 'not found';
+		if (!price || price.pricing.length === 0 || price.pricing.findIndex(element => element.price === Number(priceId)) === -1) {
+			return 'Not Found';
 		}
 
 		pricing = {
 			...pricing,
 			[pricingId]: {
 				...price,
-				pricing: price.pricing.filter(elem => elem.id !== Number(priceId))
+				pricing: price.pricing.filter(elem => elem.price !== Number(priceId))
 			}
 		};
 

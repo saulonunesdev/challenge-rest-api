@@ -3,13 +3,19 @@ import pricingModels from './models/pricingModels';
 
 const machine = {
 	getMachinebyId (ctx, next) {
-		ctx.body = machineModels.findMachineById(ctx.params.id);
+		const ret = machineModels.findMachineById(ctx.params.id);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret;
 	},
 	updateMachinePricing (ctx, next) {
-		ctx.body = machineModels.updateMachinePricing(ctx.params.machineId, ctx.params.pricingId);
+		const ret = machineModels.updateMachinePricing(ctx.params.machineId, ctx.params.pricingId);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret;
 	},
 	deleteMachinePricing (ctx, next) {
-		ctx.body = machineModels.deleteMachinePricing(ctx.params.machineId, ctx.params.pricingId);
+		const ret = machineModels.deleteMachinePricing(ctx.params.machineId, ctx.params.pricingId);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret === 'Not Found' ? ret : machineModels.findMachineById(ctx.params.machineId);
 	}
 };
 
@@ -18,30 +24,36 @@ const prices = {
 		ctx.body = pricingModels.findAllPricing();
 	},
 	getPricebyId (ctx, netx) {
-		ctx.body = pricingModels.findPricebyId(ctx.params.id);
+		const ret = pricingModels.findPricebyId(ctx.params.id);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret;
 	},
 	getPricingbyId (ctx, netx) {
-		ctx.body = pricingModels.findPricingbyId(ctx.params.id);
+		const ret =pricingModels.findPricingbyId(ctx.params.id);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret;
 	},
 	putPricingById (ctx, next) {
 		Object.keys(ctx.request.body).forEach(key => {
 			pricingModels.setPricingMetaData(ctx.params.id, key, ctx.request.body[key]);
 		});
-		ctx.body = pricingModels.findPricebyId(ctx.params.id);
+		const ret = pricingModels.findPricebyId(ctx.params.id);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret;
 	},
 	postPricingModel (ctx, next) {
 		ctx.body = pricingModels.savePricingModel(ctx.request.body.name);
 	},
 	postPricingPrices (ctx, next) {
 		pricingModels.savePricingPrices(ctx.params.id, ctx.request.body.pricing);
-		ctx.body = pricingModels.findPricebyId(ctx.params.id);
+		const ret = pricingModels.findPricebyId(ctx.params.id);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret;
 	},
 	deletePricingPrice (ctx, next) {
-		ctx.body = pricingModels.deletePricingPrice(
-			ctx.params.pricingId, ctx.params.priceId) === 'not found' ?
-			'not found' :
-			pricingModels.findPricebyId(ctx.params.pricingId
-			);
+		let ret = pricingModels.deletePricingPrice(ctx.params.pricingId, ctx.params.priceId);
+		ctx.status = ret === 'Not Found' ? 404 : 200;
+		ctx.body = ret === 'Not Found' ? ret : pricingModels.findPricebyId(ctx.params.pricingId);
 	}
 };
 
