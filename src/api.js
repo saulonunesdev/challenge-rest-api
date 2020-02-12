@@ -4,6 +4,7 @@ const pricingModels = require('./models/pricingModels');
 const machine = {
 	getMachinebyId (ctx, netx) {
 		const { id } = ctx.params;
+		console.log(ctx.params);
 		ctx.body = machineModels.findMachineById(id);
 	}
 };
@@ -19,6 +20,16 @@ const prices = {
 	getPricingbyId (ctx, netx) {
 		const { id } = ctx.params;
 		ctx.body = pricingModels.findPricingbyId(id);
+	},
+	putPricingById (ctx, next) {
+		const { body } = ctx.request;
+		const { id } = ctx.params;
+
+		Object.keys(body).forEach(key => {
+			pricingModels.setPricingMetaData(id, key, body[key]);
+		});
+
+		ctx.body = pricingModels.findPricebyId(id);
 	}
 };
 

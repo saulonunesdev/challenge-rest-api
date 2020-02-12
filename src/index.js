@@ -18,7 +18,8 @@ router
 	.get('/machines/:id/prices', machine.getMachinebyId)
 	.get('/pricing-models', prices.getAllPricing)
 	.get('/pricing-models/:id', prices.getPricebyId)
-	.get('/pricing-models/:id/prices', prices.getPricingbyId);
+	.get('/pricing-models/:id/prices', prices.getPricingbyId)
+	.put('/pricing-models/:id', prices.putPricingById);
 
 app
 	.use(router.routes())
