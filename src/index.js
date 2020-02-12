@@ -21,7 +21,8 @@ router
 	.get('/pricing-models/:id/prices', prices.getPricingbyId)
 	.put('/pricing-models/:id', prices.putPricingById)
 	.post('/pricing-models', prices.postPricingModel)
-	.post('/pricing-models/:id/prices', prices.postPricingPrices);
+	.post('/pricing-models/:id/prices', prices.postPricingPrices)
+	.delete('/pricing-models/:pricingId/prices/:priceId', prices.deletePricingPrice);
 
 app
 	.use(router.routes())

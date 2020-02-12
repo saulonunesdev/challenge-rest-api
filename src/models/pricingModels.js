@@ -88,11 +88,32 @@ function savePricingModel (name) {
 	return {id: id};
 }
 
+function deletePricingPrice (pricingId, priceId) {
+	let price = pricing[pricingId];
+
+	if (!price || price.pricing.length === 0 || price.pricing.findIndex(element => element.id === Number(priceId)) === -1) {
+		return 'not found';
+	}
+
+	pricing = {
+		...pricing,
+		[pricingId]: {
+			...price,
+			pricing: price.pricing.filter(elem => elem.id !== Number(priceId))
+		}
+	};
+
+	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+		console.log(`Price.pricing removed: ${price} `);
+	});
+}
+
 module.exports = {
 	findAllPricing,
 	findPricebyId,
 	findPricingbyId,
 	setPricingMetaData,
 	savePricingModel,
-	savePricingPrices
+	savePricingPrices,
+	deletePricingPrice
 };

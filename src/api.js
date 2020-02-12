@@ -40,11 +40,17 @@ const prices = {
 		const { body } = ctx.request;
 		const { id } = ctx.params;
 
-		console.log(body);
-
 		pricingModels.savePricingPrices(id, body.pricing);
 
 		ctx.body = pricingModels.findPricebyId(id);
+	},
+	deletePricingPrice (ctx, next) {
+		const { pricingId, priceId } = ctx.params;
+
+		// pricingModels.deletePricingPrice(pricingId, priceId);
+
+		ctx.body = pricingModels.deletePricingPrice(pricingId, priceId) === 'not found' ? 'not found' : pricingModels.findPricebyId(pricingId);
+		// ctx.body = pricingModels.findPricebyId(pricingId);
 	}
 };
 
