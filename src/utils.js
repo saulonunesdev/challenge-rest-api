@@ -1,10 +1,11 @@
-function randomAlphaNumeric () {
-	return Math.random().toString(36).charAt(2);
-}
+const utils = {
+	randomAlphaNumeric () {
+		return Math.random().toString(36).charAt(2);
+	},
+	createFromPattern (pattern) {
+		pattern = pattern.split('');
+		return pattern.map(x => x.replace('x', this.randomAlphaNumeric())).join('');
+	}
+};
 
-function createFromPattern (pattern) {
-	pattern = pattern.split('');
-	return pattern.map(x => x.replace('x', randomAlphaNumeric())).join('');
-}
-
-module.exports = { createFromPattern };
+export default utils;

@@ -1,11 +1,9 @@
-const machineModels = require('./models/machineModels');
-const pricingModels = require('./models/pricingModels');
+import machineModels from './models/machineModels';
+import pricingModels from './models/pricingModels';
 
 const machine = {
 	getMachinebyId (ctx, netx) {
-		const { id } = ctx.params;
-		console.log(ctx.params);
-		ctx.body = machineModels.findMachineById(id);
+		ctx.body = machineModels.findMachineById(ctx.params.id);
 	}
 };
 
@@ -14,43 +12,30 @@ const prices = {
 		ctx.body = pricingModels.findAllPricing();
 	},
 	getPricebyId (ctx, netx) {
-		const { id } = ctx.params;
-		ctx.body = pricingModels.findPricebyId(id);
+		ctx.body = pricingModels.findPricebyId(ctx.params.id);
 	},
 	getPricingbyId (ctx, netx) {
-		const { id } = ctx.params;
-		ctx.body = pricingModels.findPricingbyId(id);
+		ctx.body = pricingModels.findPricingbyId(ctx.params.id);
 	},
 	putPricingById (ctx, next) {
-		const { body } = ctx.request;
-		const { id } = ctx.params;
-
-		Object.keys(body).forEach(key => {
-			pricingModels.setPricingMetaData(id, key, body[key]);
+		Object.keys(ctx.request.body).forEach(key => {
+			pricingModels.setPricingMetaData(ctx.params.id, key, ctx.request.body[key]);
 		});
-
-		ctx.body = pricingModels.findPricebyId(id);
+		ctx.body = pricingModels.findPricebyId(ctx.params.id);
 	},
 	postPricingModel (ctx, next) {
-		const { body } = ctx.request;
-
-		ctx.body = pricingModels.savePricingModel(body.name);
+		ctx.body = pricingModels.savePricingModel(ctx.request.body.name);
 	},
 	postPricingPrices (ctx, next) {
-		const { body } = ctx.request;
-		const { id } = ctx.params;
-
-		pricingModels.savePricingPrices(id, body.pricing);
-
-		ctx.body = pricingModels.findPricebyId(id);
+		pricingModels.savePricingPrices(ctx.params.id, ctx.request.body.pricing);
+		ctx.body = pricingModels.findPricebyId(ctx.params.id);
 	},
 	deletePricingPrice (ctx, next) {
-		const { pricingId, priceId } = ctx.params;
-
-		// pricingModels.deletePricingPrice(pricingId, priceId);
-
-		ctx.body = pricingModels.deletePricingPrice(pricingId, priceId) === 'not found' ? 'not found' : pricingModels.findPricebyId(pricingId);
-		// ctx.body = pricingModels.findPricebyId(pricingId);
+		ctx.body = pricingModels.deletePricingPrice(
+			ctx.params.pricingId, ctx.params.priceId) === 'not found' ?
+			'not found' :
+			pricingModels.findPricebyId(ctx.params.pricingId
+			);
 	}
 };
 

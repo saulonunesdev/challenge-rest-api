@@ -1,16 +1,16 @@
-const machines = require('../../machines.json');
-const pricing = require('../../prices.json');
+import data from '../../machines.json';
+import pricingData from '../../prices.json';
 
-let data = { ...machines };
+var machines = { ...data };
 
-function findMachineById (id) {
-	const obj = {
-		...data[id],
-		pricing: pricing[id] ? pricing[id] : pricing.default_pricing
-	};
-	return data[id] ? obj : 'not found';
-}
-
-module.exports = {
-	findMachineById
+const machineModels = {
+	findMachineById (id) {
+		const obj = {
+			...machines[id],
+			pricing: pricingData[machines[id].pricing_id] ? pricingData[machines[id].pricing_id] : pricingData.default_pricing
+		};
+		return machines[id] ? obj : 'not found';
+	}
 };
+
+export default machineModels;

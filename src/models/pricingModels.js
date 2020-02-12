@@ -1,119 +1,104 @@
-var pricing = require('../../prices.json');
-const utils = require('../utils');
-var fs = require('fs');
+import data from '../../prices.json';
+import utils from '../utils';
+import fs from 'fs';
 
-const data = { ...pricing };
+var pricing = data;
 
-function adjustData (obj) {
-	const resp = {
-		defaultPricing: obj.default_pricing,
-		prices: delete obj.default_pricing ? Object.keys(obj).map(key => obj[key]) : {}
-	};
-	return resp;
-}
-
-function findAllPricing () {
-	return adjustData(data);
-}
-
-function findPricebyId (id) {
-	return pricing[id] ? pricing[id] : 'not found';
-}
-
-function findPricingbyId (id) {
-	return pricing[id] ? pricing[id].pricing : 'not found';
-}
-
-function setPricingMetaData (pricingId, key, value) {
-	if (key === 'id' || key === 'pricing') {
-		return;
-	}
-
-	const price = pricing[pricingId];
-
-	if (!price || (price && !price[key])) {
-		return;
-	}
-
-	pricing = {
-		...pricing,
-		[pricingId]: {
-			...price,
-			[key]: value
+const pricingModels = {
+	findAllPricing () {
+		const _data = { ...pricing };
+		const resp = {
+			defaultPricing: _data.default_pricing,
+			prices: delete _data.default_pricing ? Object.keys(_data).map(key => _data[key]) : {}
+		};
+		return resp;
+	},
+	findPricebyId (id) {
+		return pricing[id] ? pricing[id] : 'not found';
+	},
+	findPricingbyId (id) {
+		return pricing[id] ? pricing[id].pricing : 'not found';
+	},
+	setPricingMetaData (pricingId, key, value) {
+		if (key === 'id' || key === 'pricing') {
+			return;
 		}
-	};
 
-	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
-		console.log(`Price.${key} new_value: ${value} `);
-	});
-}
+		const price = pricing[pricingId];
 
-function savePricingPrices (pricingId, prices) {
-	if (prices.length === 0) {
-		return;
-	}
-
-	const price = pricing[pricingId];
-
-	if (!price) {
-		return 'not found';
-	}
-
-	pricing = {
-		...pricing,
-		[pricingId]: {
-			...price,
-			pricing: prices
+		if (!price || (price && !price[key])) {
+			return;
 		}
-	};
 
-	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
-		console.log(`Price.pricing new_value: ${prices} `);
-	});
-}
+		pricing = {
+			...pricing,
+			[pricingId]: {
+				...price,
+				[key]: value
+			}
+		};
 
-function savePricingModel (name) {
-	const id = utils.createFromPattern('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxcxxxxxx');
-
-	pricing[id] = {
-		id: id,
-		name: name,
-		pricing: []
-	};
-
-	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
-		console.log(`Price.${id} new_value: ${pricing[id]} `);
-	});
-
-	return {id: id};
-}
-
-function deletePricingPrice (pricingId, priceId) {
-	let price = pricing[pricingId];
-
-	if (!price || price.pricing.length === 0 || price.pricing.findIndex(element => element.id === Number(priceId)) === -1) {
-		return 'not found';
-	}
-
-	pricing = {
-		...pricing,
-		[pricingId]: {
-			...price,
-			pricing: price.pricing.filter(elem => elem.id !== Number(priceId))
+		fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+			console.log('Price.'+pricingId + '.' + key +' new_value: ' + JSON.stringify(value));
+		});
+	},
+	savePricingPrices (pricingId, prices) {
+		if (prices.length === 0) {
+			return;
 		}
-	};
 
-	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
-		console.log(`Price.pricing removed: ${price} `);
-	});
-}
+		const price = pricing[pricingId];
 
-module.exports = {
-	findAllPricing,
-	findPricebyId,
-	findPricingbyId,
-	setPricingMetaData,
-	savePricingModel,
-	savePricingPrices,
-	deletePricingPrice
+		if (!price) {
+			return 'not found';
+		}
+
+		pricing = {
+			...pricing,
+			[pricingId]: {
+				...price,
+				pricing: prices
+			}
+		};
+
+		fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+			console.log('Price.' + pricingId +' new_value: ' + JSON.stringify(prices));
+		});
+	},
+	savePricingModel (name) {
+		const id = utils.createFromPattern('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxcxxxxxx');
+
+		pricing[id] = {
+			id: id,
+			name: name,
+			pricing: []
+		};
+
+		fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+			console.log('Price.' + id +' new_value: ' + JSON.stringify(pricing[id]));
+		});
+
+		return {id: id};
+	},
+	deletePricingPrice (pricingId, priceId) {
+		let price = pricing[pricingId];
+
+		if (!price || price.pricing.length === 0 || price.pricing.findIndex(element => element.id === Number(priceId)) === -1) {
+			return 'not found';
+		}
+
+		pricing = {
+			...pricing,
+			[pricingId]: {
+				...price,
+				pricing: price.pricing.filter(elem => elem.id !== Number(priceId))
+			}
+		};
+
+		fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+			console.log('Price.' + pricing +' removed: ' + JSON.stringify(price));
+		});
+	}
 };
+
+export default pricingModels;
