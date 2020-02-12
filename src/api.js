@@ -30,6 +30,21 @@ const prices = {
 		});
 
 		ctx.body = pricingModels.findPricebyId(id);
+	},
+	postPricingModel (ctx, next) {
+		const { body } = ctx.request;
+
+		ctx.body = pricingModels.savePricingModel(body.name);
+	},
+	postPricingPrices (ctx, next) {
+		const { body } = ctx.request;
+		const { id } = ctx.params;
+
+		console.log(body);
+
+		pricingModels.savePricingPrices(id, body.pricing);
+
+		ctx.body = pricingModels.findPricebyId(id);
 	}
 };
 

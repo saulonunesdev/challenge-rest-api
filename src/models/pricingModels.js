@@ -1,4 +1,5 @@
 var pricing = require('../../prices.json');
+const utils = require('../utils');
 var fs = require('fs');
 
 const data = { ...pricing };
@@ -47,9 +48,51 @@ function setPricingMetaData (pricingId, key, value) {
 	});
 }
 
+function savePricingPrices (pricingId, prices) {
+	if (prices.length === 0) {
+		return;
+	}
+
+	const price = pricing[pricingId];
+
+	if (!price) {
+		return 'not found';
+	}
+
+	pricing = {
+		...pricing,
+		[pricingId]: {
+			...price,
+			pricing: prices
+		}
+	};
+
+	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+		console.log(`Price.pricing new_value: ${prices} `);
+	});
+}
+
+function savePricingModel (name) {
+	const id = utils.createFromPattern('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxcxxxxxx');
+
+	pricing[id] = {
+		id: id,
+		name: name,
+		pricing: []
+	};
+
+	fs.writeFile('prices.json', JSON.stringify(pricing), 'utf8', () => {
+		console.log(`Price.${id} new_value: ${pricing[id]} `);
+	});
+
+	return {id: id};
+}
+
 module.exports = {
 	findAllPricing,
 	findPricebyId,
 	findPricingbyId,
-	setPricingMetaData
+	setPricingMetaData,
+	savePricingModel,
+	savePricingPrices
 };
